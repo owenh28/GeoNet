@@ -1,6 +1,6 @@
 {
   "name": "gis-rest-net",
-  "displayName": "GeoScooper",
+  "displayName": "GeoNet",
   "version": "0.0.1",
   "description": "Find ArcGIS Online and ArcGIS Enterprise Rest servers providing GIS data to a site",
   "author": "owen_h_28",
