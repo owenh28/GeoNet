@@ -1,15 +1,23 @@
 {
   "name": "gis-rest-net",
-  "displayName": "Gis rest net",
+  "displayName": "GeoScooper",
   "version": "0.0.1",
-  "description": "get the gis servers",
-  "author": "owenh",
+  "description": "Find ArcGIS Online and ArcGIS Enterprise Rest servers providing GIS data to a site",
+  "author": "owen_h_28",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
     "package": "plasmo package"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.2",
+    "@mui/material": "^7.3.2",
+    "@mui/x-date-pickers": "^8.11.3",
+    "datatables.net-dt": "^2.3.4",
+    "datatables.net-react": "^1.0.1",
+    "material-react-table": "^3.2.1",
     "plasmo": "0.90.5",
     "react": "18.2.0",
     "react-dom": "18.2.0"
@@ -21,11 +29,15 @@
     "@types/react": "18.2.48",
     "@types/react-dom": "18.2.18",
     "prettier": "3.2.4",
+    "process": "^0.11.10",
     "typescript": "5.3.3"
   },
   "manifest": {
     "host_permissions": [
       "https://*/*"
+    ],
+    "permissions": [
+      "webRequest"
     ]
   }
 }

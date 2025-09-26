@@ -1,0 +1,9 @@
+body{
+    width: 50em;
+}
+#no-rows{
+    text-align: center;
+}
+#download{
+    margin: 10px;
+}

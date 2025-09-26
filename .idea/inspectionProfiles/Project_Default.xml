@@ -1,0 +1,65 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="44">
+            <item index="0" class="java.lang.String" itemvalue="protobuf" />
+            <item index="1" class="java.lang.String" itemvalue="geonode-django-dynamic-model" />
+            <item index="2" class="java.lang.String" itemvalue="factory-boy" />
+            <item index="3" class="java.lang.String" itemvalue="dynamic-rest" />
+            <item index="4" class="java.lang.String" itemvalue="pytest-splinter" />
+            <item index="5" class="java.lang.String" itemvalue="geonode-announcements" />
+            <item index="6" class="java.lang.String" itemvalue="dj-pagination" />
+            <item index="7" class="java.lang.String" itemvalue="django-activity-stream" />
+            <item index="8" class="java.lang.String" itemvalue="drf-writable-nested" />
+            <item index="9" class="java.lang.String" itemvalue="pyopenssl" />
+            <item index="10" class="java.lang.String" itemvalue="docker" />
+            <item index="11" class="java.lang.String" itemvalue="django-widget-tweaks" />
+            <item index="12" class="java.lang.String" itemvalue="django-geonode-mapstore-client" />
+            <item index="13" class="java.lang.String" itemvalue="django-invitations" />
+            <item index="14" class="java.lang.String" itemvalue="django-polymorphic" />
+            <item index="15" class="java.lang.String" itemvalue="django-imagekit" />
+            <item index="16" class="java.lang.String" itemvalue="django-uuid-upload-path" />
+            <item index="17" class="java.lang.String" itemvalue="zipstream-ng" />
+            <item index="18" class="java.lang.String" itemvalue="Shapely" />
+            <item index="19" class="java.lang.String" itemvalue="Paver" />
+            <item index="20" class="java.lang.String" itemvalue="django-forms-bootstrap" />
+            <item index="21" class="java.lang.String" itemvalue="geonode-user-messages" />
+            <item index="22" class="java.lang.String" itemvalue="djangorestframework-guardian" />
+            <item index="23" class="java.lang.String" itemvalue="pdok-geopackage-validator" />
+            <item index="24" class="java.lang.String" itemvalue="uWSGI" />
+            <item index="25" class="java.lang.String" itemvalue="splinter" />
+            <item index="26" class="java.lang.String" itemvalue="selenium-requests" />
+            <item index="27" class="java.lang.String" itemvalue="sherlock" />
+            <item index="28" class="java.lang.String" itemvalue="django-modeltranslation" />
+            <item index="29" class="java.lang.String" itemvalue="django-bootstrap3-datetimepicker-2" />
+            <item index="30" class="java.lang.String" itemvalue="pixelmatch" />
+            <item index="31" class="java.lang.String" itemvalue="django-markdownify" />
+            <item index="32" class="java.lang.String" itemvalue="geonode-oauth-toolkit" />
+            <item index="33" class="java.lang.String" itemvalue="drf-extensions" />
+            <item index="34" class="java.lang.String" itemvalue="django-sequences" />
+            <item index="35" class="java.lang.String" itemvalue="Django" />
+            <item index="36" class="java.lang.String" itemvalue="gn-arcrest" />
+            <item index="37" class="java.lang.String" itemvalue="django-floppyforms" />
+            <item index="38" class="java.lang.String" itemvalue="gdal" />
+            <item index="39" class="java.lang.String" itemvalue="gn-gsimporter" />
+            <item index="40" class="java.lang.String" itemvalue="django-downloadview" />
+            <item index="41" class="java.lang.String" itemvalue="webdriver_manager" />
+            <item index="42" class="java.lang.String" itemvalue="geonode-pinax-notifications" />
+            <item index="43" class="java.lang.String" itemvalue="geoserver-restconfig" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N802" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
