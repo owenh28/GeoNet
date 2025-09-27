@@ -1,22 +1,18 @@
+@import "../node_modules/nord/src/sass/nord.scss";
 @import '@mantine/core/styles.css';
 body {
   width: 50em;
   font-family: "Noto Sans", serif;
 }
-
-#no-rows {
+#no-rows{
   text-align: center;
 }
-
-#download {
+#download{
   margin: 10px;
 }
-
-#refresh, #download {
+#refresh,#download{
   font-family: "Noto Sans", serif;
   font-weight: bold;
-  color: #88C0D0;
-  border-color: #88C0D0;
+  color: $nord8;
+  border-color: $nord8;
 }
-
-/*# sourceMappingURL=popup.css.map */

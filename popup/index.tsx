@@ -1,7 +1,31 @@
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { MaterialReactTable, MRT_ActionMenuItem, useMaterialReactTable, type MRT_ColumnDef } from "material-react-table";
+import {
+  ActionIcon,
+  Box,
+  Button,
+  DEFAULT_THEME,
+  MantineProvider,
+  Menu, useMantineColorScheme
+} from "@mantine/core"
+import {
+  IconCopy,
+  IconDownload,
+  IconExternalLink,
+  IconRefresh,
+  IconArrowsSort
+} from "@tabler/icons-react"
+import { MantineReactTable, useMantineReactTable, type MRT_ColumnDef } from "mantine-react-table";
 import { useEffect, useMemo, useState } from "react";
 
+
+
+import { theme } from '~/theme/theme';
+
+
+
+
+
+import classes = Menu.classes
+import clsx from "clsx"
 
 
 
@@ -36,6 +60,7 @@ function prepareDownload(data: Service[]){
 function IndexPopup() {
   const [data, setData] = useState<Service[]>([])
   const [ref_btn, setRef_btn]=useState(0)
+  // const colorScheme = useMantineColorScheme()
   const getData = async () => {
     const dat = await update()
     setData(dat)
@@ -55,46 +80,50 @@ function IndexPopup() {
     []
   )
 
-  const table = useMaterialReactTable({
+  const table = useMantineReactTable({
     data,
     columns,
     enableGlobalFilter: false,
     enableClickToCopy: true,
-    enableCellActions: true,
     enableBottomToolbar: false,
     enableTopToolbar: false,
     enableColumnActions: false,
+    mantineTableProps: {
+      className: clsx(classes.table),},
     renderEmptyRowsFallback: ({ table }) => (
       <h3 id={"no-rows"}>No ArcGIS Servers found</h3>
     ),
-    renderCellActionMenuItems: ({ closeMenu, cell, row, table }) => [
-      <MRT_ActionMenuItem
-        icon={<OpenInNewIcon />}
-        label={"Open"}
-        onClick={() => {
-          const url:string = cell.getValue().toString()
+    enableRowActions: true,
+    renderRowActions: ({row}) => (
+      <Box display='flex'>
+        <ActionIcon onClick={()=> {const url:string = row.original.url
           window.open(url)
-          closeMenu()
-        }}
-        table={table}
-      />
-    ]
+        }}>
+          <IconExternalLink />
+        </ActionIcon>
+        <ActionIcon onClick={() => navigator.clipboard.writeText(row.original.url)} color={"red"}>
+          <IconCopy />
+        </ActionIcon>
+      </Box>
+    ),
   })
 
   return (
+    <MantineProvider theme={theme} defaultColorScheme={"auto"}>
     <div
       style={{
         padding: 16
       }}>
       <h1>ArcGIS Servers found on this site:</h1>
       <div>
-        <button id="refresh" onClick={() =>getData()}>Refresh</button>
-        <button id="download">
+        <Button id="refresh" onClick={() =>getData()} variant={"outline"} leftSection={<IconRefresh />}>Refresh</Button>
+        <Button id="download" variant={"outline"} leftSection={<IconDownload />}>
           Download List
-        </button>
+        </Button>
       </div>
-      <MaterialReactTable table={table} />
+      <MantineReactTable table={table} />
     </div>
+    </MantineProvider>
   )
 }
 
