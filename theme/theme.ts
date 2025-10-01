@@ -1,8 +1,20 @@
-import{createTheme, DEFAULT_THEME, mergeMantineTheme} from "@mantine/core"
-
+import {
+  createTheme,
+  DEFAULT_THEME,
+  mergeMantineTheme,
+  Tooltip
+} from "@mantine/core"
 
 const themeOverride = createTheme({
-  primaryColor: 'orange'
-
+  primaryColor: "blue",
+  components: {
+    Tooltip: Tooltip.extend({
+      defaultProps: {
+        transitionProps: { transition: 'fade', duration: 300 },
+        position: "bottom",
+        openDelay: 500,
+      }
+    })
+  }
 })
 export const theme = mergeMantineTheme(DEFAULT_THEME, themeOverride)

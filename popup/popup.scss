@@ -1,5 +1,9 @@
 @import "../node_modules/nord/src/sass/nord.scss";
 @import '@mantine/core/styles.css';
+@import 'mantine-react-table/styles.css';
+:root{
+
+}
 body {
   width: 50em;
   font-family: "Noto Sans", serif;
@@ -13,6 +17,6 @@ body {
 #refresh,#download{
   font-family: "Noto Sans", serif;
   font-weight: bold;
-  color: $nord8;
-  border-color: $nord8;
+  //color: $nord8;
+  //border-color: $nord8;
 }

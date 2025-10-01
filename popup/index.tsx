@@ -4,31 +4,29 @@ import {
   Button,
   DEFAULT_THEME,
   MantineProvider,
-  Menu, useMantineColorScheme
+  Menu,
+  Tooltip,
+  useMantineColorScheme
 } from "@mantine/core"
 import {
+  IconArrowsSort,
   IconCopy,
   IconDownload,
   IconExternalLink,
-  IconRefresh,
-  IconArrowsSort
+  IconRefresh
 } from "@tabler/icons-react"
-import { MantineReactTable, useMantineReactTable, type MRT_ColumnDef } from "mantine-react-table";
-import { useEffect, useMemo, useState } from "react";
+import clsx from "clsx"
+import {
+  MantineReactTable,
+  useMantineReactTable,
+  type MRT_ColumnDef,
+  type MRT_Icons
+} from "mantine-react-table"
+import { useEffect, useMemo, useState } from "react"
 
-
-
-import { theme } from '~/theme/theme';
-
-
-
-
+import { theme } from "~/theme/theme"
 
 import classes = Menu.classes
-import clsx from "clsx"
-
-
-
 
 require("./popup.css")
 
@@ -53,13 +51,14 @@ async function update(): Promise<Service[]> {
 
   return tmp_data
 }
-function prepareDownload(data: Service[]){
-
+function downloadData(){
+  // todo: create the function to download the table
 }
+function prepareDownload(data: Service[]) {}
 
 function IndexPopup() {
   const [data, setData] = useState<Service[]>([])
-  const [ref_btn, setRef_btn]=useState(0)
+  const [ref_btn, setRef_btn] = useState(0)
   // const colorScheme = useMantineColorScheme()
   const getData = async () => {
     const dat = await update()
@@ -68,6 +67,7 @@ function IndexPopup() {
   useEffect(() => {
     getData()
   }, [ref_btn])
+
 
   const columns = useMemo<MRT_ColumnDef<Service>[]>(
     () => [
@@ -89,40 +89,60 @@ function IndexPopup() {
     enableTopToolbar: false,
     enableColumnActions: false,
     mantineTableProps: {
-      className: clsx(classes.table),},
+      className: clsx(classes.table)
+    },
     renderEmptyRowsFallback: ({ table }) => (
       <h3 id={"no-rows"}>No ArcGIS Servers found</h3>
     ),
     enableRowActions: true,
-    renderRowActions: ({row}) => (
-      <Box display='flex'>
-        <ActionIcon onClick={()=> {const url:string = row.original.url
-          window.open(url)
-        }}>
+    renderRowActions: ({ row }) => (
+      <Box display="flex">
+        <ActionIcon
+          onClick={() => {
+            const url: string = row.original.url
+            window.open(url)
+          }}>
           <IconExternalLink />
         </ActionIcon>
-        <ActionIcon onClick={() => navigator.clipboard.writeText(row.original.url)} color={"red"}>
+        <ActionIcon
+          onClick={() => navigator.clipboard.writeText(row.original.url)}
+          color={"red"}>
           <IconCopy />
         </ActionIcon>
       </Box>
-    ),
+    )
   })
 
   return (
     <MantineProvider theme={theme} defaultColorScheme={"auto"}>
-    <div
-      style={{
-        padding: 16
-      }}>
-      <h1>ArcGIS Servers found on this site:</h1>
-      <div>
-        <Button id="refresh" onClick={() =>getData()} variant={"outline"} leftSection={<IconRefresh />}>Refresh</Button>
-        <Button id="download" variant={"outline"} leftSection={<IconDownload />}>
-          Download List
-        </Button>
+      <div
+        style={{
+          padding: 16
+        }}>
+        <h1>ArcGIS Servers found on this site:</h1>
+        <div>
+          <Tooltip label={"Refresh list of servers"}>
+            <Button
+              id="refresh"
+              onClick={() => getData()}
+              variant={"outline"}
+              leftSection={<IconRefresh />}>
+              Refresh
+            </Button>
+          </Tooltip>
+          <Tooltip label={"Download a list of all servers in table"}>
+            <Button
+              id="download"
+              variant={"outline"}
+              onClick={()=> downloadData()}
+              leftSection={<IconDownload />}>
+
+              Download List
+            </Button>
+          </Tooltip>
+        </div>
+        <MantineReactTable table={table} />
       </div>
-      <MantineReactTable table={table} />
-    </div>
     </MantineProvider>
   )
 }
