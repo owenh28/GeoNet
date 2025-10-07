@@ -1,26 +1,22 @@
 import {
   ActionIcon,
   Box,
-  Button,
-  DEFAULT_THEME,
   MantineProvider,
   Menu,
-  Tooltip,
-  useMantineColorScheme
+  Tooltip
 } from "@mantine/core"
 import {
-  IconArrowsSort,
   IconCopy,
   IconDownload,
   IconExternalLink,
   IconRefresh
 } from "@tabler/icons-react"
 import clsx from "clsx"
+import { download, generateCsv, mkConfig } from "export-to-csv"
 import {
   MantineReactTable,
   useMantineReactTable,
-  type MRT_ColumnDef,
-  type MRT_Icons
+  type MRT_ColumnDef
 } from "mantine-react-table"
 import { useEffect, useMemo, useState } from "react"
 
@@ -51,15 +47,15 @@ async function update(): Promise<Service[]> {
 
   return tmp_data
 }
-function downloadData(){
-  // todo: create the function to download the table
-}
-function prepareDownload(data: Service[]) {}
+const csvConfig = mkConfig({
+  fieldSeparator: ",",
+  decimalSeparator: ".",
+  useKeysAsHeaders: true
+})
 
 function IndexPopup() {
   const [data, setData] = useState<Service[]>([])
-  const [ref_btn, setRef_btn] = useState(0)
-  // const colorScheme = useMantineColorScheme()
+  const [ref_btn] = useState(0)
   const getData = async () => {
     const dat = await update()
     setData(dat)
@@ -67,7 +63,6 @@ function IndexPopup() {
   useEffect(() => {
     getData()
   }, [ref_btn])
-
 
   const columns = useMemo<MRT_ColumnDef<Service>[]>(
     () => [
@@ -80,18 +75,38 @@ function IndexPopup() {
     []
   )
 
+  const exportData = () => {
+    // @ts-ignore
+    const dataDownload = generateCsv(csvConfig)(data)
+    download(csvConfig)(dataDownload)
+  }
+
   const table = useMantineReactTable({
     data,
     columns,
     enableGlobalFilter: false,
     enableClickToCopy: true,
     enableBottomToolbar: false,
-    enableTopToolbar: false,
+    enableTopToolbar: true,
+    renderToolbarInternalActions: () => (
+      <>
+        <Tooltip label={"Download List"}>
+          <ActionIcon onClick={() => exportData()} variant={"transparent"}>
+            <IconDownload />
+          </ActionIcon>
+        </Tooltip>
+        <Tooltip label={"Refresh Data"}>
+          <ActionIcon onClick={() => getData()} variant={"transparent"}>
+            <IconRefresh />
+          </ActionIcon>
+        </Tooltip>
+      </>
+    ),
     enableColumnActions: false,
     mantineTableProps: {
       className: clsx(classes.table)
     },
-    renderEmptyRowsFallback: ({ table }) => (
+    renderEmptyRowsFallback: () => (
       <h3 id={"no-rows"}>No ArcGIS Servers found</h3>
     ),
     enableRowActions: true,
@@ -120,27 +135,6 @@ function IndexPopup() {
           padding: 16
         }}>
         <h1>ArcGIS Servers found on this site:</h1>
-        <div>
-          <Tooltip label={"Refresh list of servers"}>
-            <Button
-              id="refresh"
-              onClick={() => getData()}
-              variant={"outline"}
-              leftSection={<IconRefresh />}>
-              Refresh
-            </Button>
-          </Tooltip>
-          <Tooltip label={"Download a list of all servers in table"}>
-            <Button
-              id="download"
-              variant={"outline"}
-              onClick={()=> downloadData()}
-              leftSection={<IconDownload />}>
-
-              Download List
-            </Button>
-          </Tooltip>
-        </div>
         <MantineReactTable table={table} />
       </div>
     </MantineProvider>

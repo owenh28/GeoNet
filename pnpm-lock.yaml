@@ -47,6 +47,9 @@ importers:
       dayjs:
         specifier: ^1.11.18
         version: 1.11.18
+      export-to-csv:
+        specifier: ^1.4.0
+        version: 1.4.0
       mantine-react-table:
         specifier: 2.0.0-beta.9
         version: 2.0.0-beta.9(@mantine/core@7.17.8(@mantine/hooks@7.17.8(react@18.2.0))(@types/react@18.2.48)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@mantine/dates@7.17.8(@mantine/core@7.17.8(@mantine/hooks@7.17.8(react@18.2.0))(@types/react@18.2.48)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@mantine/hooks@7.17.8(react@18.2.0))(dayjs@1.11.18)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@mantine/hooks@7.17.8(react@18.2.0))(@tabler/icons-react@3.35.0(react@18.2.0))(clsx@2.1.1)(dayjs@1.11.18)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -2305,6 +2308,10 @@ packages:
   execa@5.1.1:
     resolution: {integrity: sha512-8uSpZZocAZRBAPIEINJj3Lo9HyGitllczc27Eh5YYojjMFMn8yHMDMaUHE2Jqfq05D/wucwI4JGURyXt1vchyg==}
     engines: {node: '>=10'}
+
+  export-to-csv@1.4.0:
+    resolution: {integrity: sha512-6CX17Cu+rC2Fi2CyZ4CkgVG3hLl6BFsdAxfXiZkmDFIDY4mRx2y2spdeH6dqPHI9rP+AsHEfGeKz84Uuw7+Pmg==}
+    engines: {node: ^v12.20.0 || >=v14.13.0}
 
   fast-glob@3.3.2:
     resolution: {integrity: sha512-oX2ruAFQwf/Orj8m737Y5adxDQO0LAB7/S5MnxCdTNDd4p6BsyIVsv9JQsATbTSq8KHRpLwIHbVlUNatxd+1Ow==}
@@ -6110,6 +6117,8 @@ snapshots:
       onetime: 5.1.2
       signal-exit: 3.0.7
       strip-final-newline: 2.0.0
+
+  export-to-csv@1.4.0: {}
 
   fast-glob@3.3.2:
     dependencies:
