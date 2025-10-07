@@ -5,5 +5,5 @@ chrome.webRequest.onBeforeRequest.addListener(
     chrome.tabs.sendMessage(details.tabId, { greeting:"new", data: server })
 
   },
-  { urls: ["*://*/arcgis/rest/services/*", "*://*/*/arcgis/rest/services/*"] }
+  { urls: ["*://*/rest/services/*", "*://*/*/rest/services/*"] }
 )

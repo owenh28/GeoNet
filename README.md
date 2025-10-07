@@ -1,40 +1,32 @@
+
 # GeoNet: A web extension to locate web GIS servers providing data to a page!
 By filtering through requests a page makes, this extension captures the URL of requests to ArcGIS Rest endpoints and provides them in an easy to view/copy format.
 
 
+<img width="256" src="./assets/icon1024.png" alt="Project Logo"/>
 
+![](./assets/readme-photos/demo_screen.png)
 
 
 
 
 This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
 
-## Contributing
-### Getting Started
+## Project Roadmap
 
-First, run the development server:
+- v1.0: Detect arcgis rest servers and display them in the list
+- v2.0: 
+  - Add support for individual layers and their datasources
+  - Add support for other GIS server types (geoserver, etc.)
 
-```bash
+
+
+## Developing
+
+### To set up a development server:
+```aiignore
 pnpm dev
 # or
-npm run dev
+npm dev
 ```
-
 Open your browser and load the appropriate development build. For example, if you are developing for the chrome browser, using manifest v3, use: `build/chrome-mv3-dev`.
-
-You can start editing the popup by modifying `popup/index.tsx`. It should auto-update as you make changes. To add an options page, simply add a `options.tsx` file to the root of the project, with a react component default exported. Likewise to add a content page, add a `content.ts` file to the root of the project, importing some module and do some logic, then reload the extension on your browser.
-
-For further guidance, [visit our Documentation](https://docs.plasmo.com/)
-
-### Making production build
-
-Run the following:
-
-```bash
-pnpm build
-# or
-npm run build
-```
-
-This should create a production bundle for your extension, ready to be zipped and published to the stores.
-

@@ -1,26 +1,24 @@
 import {
   ActionIcon,
   Box,
+  Flex,
   MantineProvider,
   Menu,
   Tooltip
 } from "@mantine/core"
-import {
-  IconCopy,
-  IconDownload,
-  IconExternalLink,
-  IconRefresh
-} from "@tabler/icons-react"
-import clsx from "clsx"
-import { download, generateCsv, mkConfig } from "export-to-csv"
-import {
-  MantineReactTable,
-  useMantineReactTable,
-  type MRT_ColumnDef
-} from "mantine-react-table"
-import { useEffect, useMemo, useState } from "react"
+import { IconCopy, IconDownload, IconExternalLink, IconRefresh } from "@tabler/icons-react";
+import clsx from "clsx";
+import { download, generateCsv, mkConfig } from "export-to-csv";
+import { MantineReactTable, useMantineReactTable, type MRT_ColumnDef } from "mantine-react-table";
+import { useEffect, useMemo, useState } from "react";
 
-import { theme } from "~/theme/theme"
+
+
+import { theme } from "~/theme/theme";
+
+
+
+
 
 import classes = Menu.classes
 
@@ -89,7 +87,7 @@ function IndexPopup() {
     enableBottomToolbar: false,
     enableTopToolbar: true,
     renderToolbarInternalActions: () => (
-      <>
+      <Flex gap={'xs'} align={'center'}>
         <Tooltip label={"Download List"}>
           <ActionIcon onClick={() => exportData()} variant={"transparent"}>
             <IconDownload />
@@ -100,7 +98,7 @@ function IndexPopup() {
             <IconRefresh />
           </ActionIcon>
         </Tooltip>
-      </>
+      </Flex>
     ),
     enableColumnActions: false,
     mantineTableProps: {
@@ -112,18 +110,22 @@ function IndexPopup() {
     enableRowActions: true,
     renderRowActions: ({ row }) => (
       <Box display="flex">
-        <ActionIcon
+        <Tooltip label={"Open Link"}>
+        <ActionIcon variant={"transparent"}
           onClick={() => {
             const url: string = row.original.url
             window.open(url)
           }}>
           <IconExternalLink />
         </ActionIcon>
-        <ActionIcon
+        </Tooltip>
+        <Tooltip label={"Copy to Clipboard"}>
+        <ActionIcon variant={"transparent"}
           onClick={() => navigator.clipboard.writeText(row.original.url)}
           color={"red"}>
           <IconCopy />
         </ActionIcon>
+        </Tooltip>
       </Box>
     )
   })
