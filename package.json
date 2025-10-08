@@ -1,7 +1,7 @@
 {
   "name": "gis-rest-net",
   "displayName": "GeoNet",
-  "version": "2.0-dev",
+  "version": "2.0.1",
   "description": "Find ArcGIS Online and ArcGIS Enterprise Rest servers providing GIS data to a site",
   "author": "owen_h_28",
   "scripts": {
