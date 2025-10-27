@@ -1,9 +1,9 @@
 @import "../node_modules/nord/src/sass/nord.scss";
 @import '@mantine/core/styles.css';
 @import 'mantine-react-table/styles.css';
-:root{
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
-}
+
 body {
   width: 50em;
   font-family: "Noto Sans", serif;
