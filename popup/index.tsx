@@ -1,11 +1,4 @@
-import {
-  ActionIcon,
-  Box,
-  Flex,
-  MantineProvider,
-  Menu,
-  Tooltip
-} from "@mantine/core"
+import { ActionIcon, Box, Flex, MantineProvider, Menu, Tooltip } from "@mantine/core";
 import { IconCopy, IconDownload, IconExternalLink, IconRefresh } from "@tabler/icons-react";
 import clsx from "clsx";
 import { download, generateCsv, mkConfig } from "export-to-csv";
@@ -25,7 +18,26 @@ import classes = Menu.classes
 require("./popup.css")
 
 interface Service {
+  layer_name: string
   url: string
+}
+
+async function getLayerNames(layer_url: string[]): Promise<Set<Service>> {
+  const return_set = new Set<Service>();
+  for (const layer_url_value of layer_url) {
+    try {
+      const response = await fetch(layer_url_value + "?f=pjson")
+      if (!response.ok) {
+        throw new Error("Failed to fetch layer name")
+      }
+      const data = await response.json()
+      return_set.add({ url: layer_url_value, layer_name: data.name })
+    } catch (error) {
+      console.log(error.message)
+      return_set.add({ url: layer_url_value, layer_name: "Failed to fetch layer name" })
+    }
+  }
+  return return_set
 }
 
 async function update(): Promise<Service[]> {
@@ -34,13 +46,14 @@ async function update(): Promise<Service[]> {
     lastFocusedWindow: true
   })
   const response: string[] = await chrome.tabs.sendMessage(tab.id, {
-    greeting: "servers"
+    greeting: "layers"
   })
+  const layer_infos = await getLayerNames(response)
+
   // console.log(response)
   const tmp_data: Service[] = []
-  response.forEach((value) => {
-    let j: Service = { url: value }
-    tmp_data.push(j)
+  layer_infos.forEach((value) => {
+    tmp_data.push(value)
   })
 
   return tmp_data
@@ -65,9 +78,16 @@ function IndexPopup() {
   const columns = useMemo<MRT_ColumnDef<Service>[]>(
     () => [
       {
+        accessorKey: "layer_name",
+        header: "Layer Name",
+        enableHiding: false
+      },
+      {
         accessorKey: "url",
         header: "URL",
-        enableHiding: false
+        enableHiding: false,
+        size: 50,
+        grow: true
       }
     ],
     []
@@ -119,7 +139,7 @@ function IndexPopup() {
           <IconExternalLink />
         </ActionIcon>
         </Tooltip>
-        <Tooltip label={"Copy to Clipboard"}>
+        <Tooltip label={"Copy Link to Clipboard"}>
         <ActionIcon variant={"transparent"}
           onClick={() => navigator.clipboard.writeText(row.original.url)}
           color={"red"}>
