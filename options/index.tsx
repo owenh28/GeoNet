@@ -18,7 +18,7 @@ import { theme } from "~theme/theme";
 
 
 
-require('./options.css')
+require('./options.scss')
 
 
 

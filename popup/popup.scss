@@ -1,12 +1,18 @@
 @import "../node_modules/nord/src/sass/nord.scss";
 @import '@mantine/core/styles.css';
 @import 'mantine-react-table/styles.css';
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
 :root{
 
 }
 body {
-  width: 50em;
+  //width: 50em;
   font-family: "Noto Sans", serif;
+  font-size: 12px;
+}
+h3{
+  font-size: 20px;
 }
 #no-rows{
   text-align: center;
@@ -14,6 +20,13 @@ body {
 #download{
   margin: 10px;
 }
+.MRT_TopToolbar-module_actions-container__-uL0u{
+  padding: 5px;
+}
+.MRT_TopToolbar-module_root__r4-V9{
+  height: 2rem;
+}
+
 #refresh,#download{
   font-family: "Noto Sans", serif;
   font-weight: bold;

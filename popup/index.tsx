@@ -156,7 +156,7 @@ function IndexPopup() {
         style={{
           padding: 16
         }}>
-        <h1>ArcGIS Servers found on this site:</h1>
+        <h3>ArcGIS layers found on this site:</h3>
         <MantineReactTable table={table} />
       </div>
     </MantineProvider>

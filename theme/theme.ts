@@ -12,7 +12,7 @@ const themeOverride = createTheme({
       defaultProps: {
         transitionProps: { transition: 'fade', duration: 300 },
         position: "bottom",
-        openDelay: 500,
+        openDelay: 250,
       }
     })
   }
