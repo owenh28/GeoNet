@@ -1,13 +1,12 @@
 @import "../node_modules/nord/src/sass/nord.scss";
 @import '@mantine/core/styles.css';
-@import 'mantine-react-table/styles.css';
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root{
 
 }
 body {
-  //width: 50em;
+  width: 65em;
   font-family: "Noto Sans", serif;
   font-size: 12px;
 }
@@ -32,4 +31,7 @@ h3{
   font-weight: bold;
   //color: $nord8;
   //border-color: $nord8;
+}
+.mantine-datatable{
+  width: 100%;
 }
