@@ -3,8 +3,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 body {
-  width: 50em;
+  width: 65em;
   font-family: "Noto Sans", serif;
+  font-size: 12px;
+}
+
+h3 {
+  font-size: 20px;
 }
 
 #no-rows {
@@ -15,9 +20,21 @@ body {
   margin: 10px;
 }
 
+.MRT_TopToolbar-module_actions-container__-uL0u {
+  padding: 5px;
+}
+
+.MRT_TopToolbar-module_root__r4-V9 {
+  height: 2rem;
+}
+
 #refresh, #download {
   font-family: "Noto Sans", serif;
   font-weight: bold;
+}
+
+.mantine-datatable {
+  width: 100%;
 }
 
 /*# sourceMappingURL=popup.css.map */

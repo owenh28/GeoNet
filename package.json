@@ -1,7 +1,7 @@
 {
   "name": "gis-rest-net",
   "displayName": "GeoNet",
-  "version": "1.0",
+  "version": "2.0.2",
   "description": "Find ArcGIS Online and ArcGIS Enterprise Rest servers providing GIS data to a site",
   "author": "owen_h_28",
   "scripts": {
@@ -12,6 +12,9 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@esri/arcgis-rest-feature-service": "^4.10.2",
+    "@esri/arcgis-rest-portal": "^4.10.2",
+    "@esri/arcgis-rest-request": "^4.10.2",
     "@mantine/core": "^7.3",
     "@mantine/dates": "^7.3",
     "@mantine/hooks": "^7.3",
@@ -24,7 +27,7 @@
     "datatables.net-react": "^1.0.1",
     "dayjs": "^1.11.18",
     "export-to-csv": "^1.4.0",
-    "mantine-react-table": "2.0.0-beta.9",
+    "mantine-datatable": "^7.15.0",
     "material-react-table": "^3.2.1",
     "nord": "^0.2.1",
     "plasmo": "0.90.5",
@@ -37,8 +40,10 @@
     "@types/node": "20.11.5",
     "@types/react": "18.2.48",
     "@types/react-dom": "18.2.18",
+    "baseline-browser-mapping": "^2.9.11",
     "prettier": "3.2.4",
     "process": "^0.11.10",
+    "sass": "^1.76.0",
     "typescript": "5.3.3"
   },
   "manifest": {

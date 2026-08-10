@@ -1,4 +1,9 @@
-<img width="256" src="./assets/icon1024.png" alt="Project Logo"/>
+# This is a pre-release development branch! Switch to main branch for a working release!
+
+
+<img width="256" src="./assets/icon1024.png" alt="Project Logo" style="align-items:center"/>
+
+
 
 # GeoNet: A web extension to locate web GIS servers providing data to a page!
 By filtering through requests a page makes, this extension captures the URL of requests to ArcGIS Rest endpoints and provides them in an easy to view/copy format.
