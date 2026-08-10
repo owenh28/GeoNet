@@ -1,71 +1,73 @@
-import {getLayer} from "@esri/arcgis-rest-feature-service";
-import {ActionIcon, Box, Flex, MantineProvider, Tooltip} from "@mantine/core";
-import {IconCopy, IconDownload, IconExternalLink, IconRefresh} from "@tabler/icons-react";
-import {download, generateCsv, mkConfig} from "export-to-csv";
-import {DataTable} from "mantine-datatable";
-import {useEffect, useRef, useState} from "react";
+import { getLayer } from "@esri/arcgis-rest-feature-service"
+import {
+  ActionIcon,
+  Badge,
+  Box,
+  Flex,
+  MantineProvider,
+  Tooltip
+} from "@mantine/core"
+import {
+  IconCopy,
+  IconDownload,
+  IconExternalLink,
+  IconRefresh
+} from "@tabler/icons-react"
+import { download, generateCsv, mkConfig } from "export-to-csv"
+import { DataTable } from "mantine-datatable"
+import { useEffect, useState } from "react"
+
+import { theme } from "~/theme/theme"
+import { requestUrl, type CaptureItem } from "~capture_item"
 
 
-import {theme} from "~/theme/theme";
+
 
 
 require("./popup.css")
 
-interface Service {
-  layer_name: string
+const TABLE_HEIGHT = 420
+
+interface LayerRow extends CaptureItem {
+  layerName: string
+  /** Fetchable endpoint — proxied when the capture came through a proxy. */
   url: string
 }
 
-async function getLayerNames(layer_url: string[]): Promise<Set<Service>> {
-  const return_set = new Set<Service>();
-  for (const layer_url_value of layer_url) {
-    try {
-      if (!layer_url_value.includes("tilemap")) {
-        await getLayer({ url: layer_url_value }).then((layer) => {
-          console.log(layer.name.toString())
-          return_set.add({
-            url: layer_url_value,
-            layer_name: layer.name.toString()
-          })
-        })
-      }
-      else{
-        return_set.add({
-          url: layer_url_value,
-          layer_name: "Failed to fetch layer name"
-        })
-      }
+async function resolveLayer(item: CaptureItem): Promise<LayerRow> {
+  const url = requestUrl(item)
+  const fallback = item.serviceName ?? item.serviceUrl
+  const nameable =
+    item.layerId !== undefined &&
+    !url.includes("tilemap") &&
+    (item.serviceType === "FeatureServer" || item.serviceType === "MapServer")
 
-      // getService({url: layer_url_value}).then((layer) => {
-      //   console.log(layer)
-      //   return_set.add({ url: layer_url_value, layer_name: layer.layers[0].name })
-      // })
-    } catch (error) {
-      console.log(error.message)
-      return_set.add({ url: layer_url_value, layer_name: "Failed to fetch layer name" })
-    }
+  if (!nameable) {
+    return { ...item, url, layerName: fallback }
   }
-  return return_set
+
+  try {
+    const layer = await getLayer({ url })
+    return { ...item, url, layerName: String(layer.name ?? fallback) }
+  } catch (error) {
+    console.log(error.message)
+    return { ...item, url, layerName: "Failed to fetch layer name" }
+  }
 }
 
-async function update(): Promise<Service[]> {
+async function update(): Promise<LayerRow[]> {
   const [tab] = await chrome.tabs.query({
     active: true,
     lastFocusedWindow: true
   })
-  const response: string[] = await chrome.tabs.sendMessage(tab.id, {
+
+  const response: CaptureItem[] = await chrome.tabs.sendMessage(tab.id, {
     greeting: "layers"
   })
-  const layer_infos = await getLayerNames(response)
 
-  // console.log(response)
-  const tmp_data: Service[] = []
-  layer_infos.forEach((value) => {
-    tmp_data.push(value)
-  })
-
-  return tmp_data
+  return Promise.all((response ?? []).map(resolveLayer))
 }
+
 const csvConfig = mkConfig({
   fieldSeparator: ",",
   decimalSeparator: ".",
@@ -73,56 +75,36 @@ const csvConfig = mkConfig({
 })
 
 function UrlCell({ url }: { url: string }) {
-  const textRef = useRef<HTMLDivElement>(null)
-  const [truncated, setTruncated] = useState(false)
+  // URLs carry no spaces, so normal wrapping alone leaves the cell overflowing;
+  // `anywhere` lets the break land mid-token.
+  return (
+    <Box
+      style={{
+        whiteSpace: "normal",
+        overflowWrap: "anywhere",
+        wordBreak: "break-word"
+      }}>
+      {url}
+    </Box>
+  )
+}
 
-  useEffect(() => {
-    const el = textRef.current
-    if (!el) return
-
-    const check = () => setTruncated(el.scrollWidth > el.clientWidth)
-    check()
-
-    const observer = new ResizeObserver(check)
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [url])
-  function handleAuxClick(e:MouseEvent, url:string){
-    e.preventDefault();
-    if(e.button === 1){
-      window.open(url)
+function ActionsCell({ url }: { url: string }) {
+  function handleAuxClick(e: React.MouseEvent, target: string) {
+    e.preventDefault()
+    if (e.button === 1) {
+      window.open(target)
     }
   }
 
   return (
-    <Box style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-      <Tooltip
-        label={url}
-        openDelay={1000}
-        disabled={!truncated}
-        multiline
-        w={300}
-        withArrow
-        events={{ hover: true, focus: true, touch: true }}>
-        <Box
-          ref={textRef}
-          style={{
-            flex: 1,
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap"
-          }}>
-          {url}
-        </Box>
-      </Tooltip>
+    <Flex gap={4} align="center" justify="center" wrap="nowrap">
       <Tooltip label={"Open Link"}>
         <ActionIcon
           size="sm"
           variant={"transparent"}
-          onClick={() => {
-            window.open(url)
-          }}
-        onAuxClick={(e) => handleAuxClick(e, url) }>
+          onClick={() => window.open(url)}
+          onAuxClick={(e) => handleAuxClick(e, url)}>
           <IconExternalLink size={16} />
         </ActionIcon>
       </Tooltip>
@@ -135,17 +117,19 @@ function UrlCell({ url }: { url: string }) {
           <IconCopy size={16} />
         </ActionIcon>
       </Tooltip>
-    </Box>
+    </Flex>
   )
 }
 
 function IndexPopup() {
-  const [data, setData] = useState<Service[]>([])
+  const [data, setData] = useState<LayerRow[]>([])
   const [ref_btn] = useState(0)
+
   const getData = async () => {
     const dat = await update()
     setData(dat)
   }
+
   useEffect(() => {
     getData().then()
   }, [ref_btn])
@@ -154,6 +138,9 @@ function IndexPopup() {
     // @ts-ignore
     const dataDownload = generateCsv(csvConfig)(data)
     download(csvConfig)(dataDownload)
+  }
+  const handleCellClick = (event, record, index, column, columnIndex) => {
+    navigator.clipboard.writeText(record[column.accessor])
   }
 
   return (
@@ -164,7 +151,7 @@ function IndexPopup() {
         }}>
         <Flex justify="space-between" align="center" mb="md">
           <h3>ArcGIS layers found on this site:</h3>
-          <Flex gap={'xs'} align={'center'}>
+          <Flex gap={"xs"} align={"center"}>
             <Tooltip label={"Download List"}>
               <ActionIcon onClick={() => exportData()} variant={"transparent"}>
                 <IconDownload />
@@ -183,24 +170,78 @@ function IndexPopup() {
           withColumnBorders
           striped
           highlightOnHover
+          pinLastColumn
+          verticalAlign="top"
+          height={TABLE_HEIGHT}
+          idAccessor="url"
           records={data}
           className={"mantine-datatable"}
+          onCellClick={({ event, record, index, column, columnIndex }) =>
+            handleCellClick(event, record, index, column, columnIndex)
+          }
           noRecordsText="No ArcGIS Servers found"
           columns={[
             {
-              accessor: "layer_name",
+              accessor: "layerName",
               title: "Layer Name",
-              width: "45%",
+              width: 200,
+              ellipsis: true,
+              resizable: true
+            },
+            {
+              accessor: "serviceName",
+              title: "Service",
+              width: 180,
               ellipsis: true,
               resizable: true,
+              render: ({ serviceName }) => serviceName ?? "—"
+            },
+            {
+              accessor: "serviceType",
+              title: "Type",
+              width: 160,
+              render: ({ serviceType, serviceRoot, proxy }) => (
+                <Flex gap={4} align="center" wrap="wrap">
+                  <Badge size="sm" variant="light">
+                    {serviceType}
+                  </Badge>
+                  {serviceRoot === "/geoservices/fgis/" ? (
+                    <Badge size="sm" variant="outline" color="grape">
+                      fgis
+                    </Badge>
+                  ) : null}
+                  {proxy ? (
+                    <Tooltip label={proxy}>
+                      <Badge size="sm" variant="outline" color="orange">
+                        proxy
+                      </Badge>
+                    </Tooltip>
+                  ) : null}
+                </Flex>
+              )
+            },
+            {
+              accessor: "layerId",
+              title: "Layer",
+              width: 70,
+              textAlign: "center",
+              render: ({ layerId }) => layerId ?? "—"
             },
             {
               accessor: "url",
               title: "URL",
-              width: 100,
+              width: 320,
               resizable: true,
-              ellipsis: true,
+              noWrap: false,
               render: ({ url }) => <UrlCell url={url} />
+            },
+            {
+              accessor: "actions",
+              title: "Actions",
+              width: 90,
+              textAlign: "center",
+              sortable: false,
+              render: ({ url }) => <ActionsCell url={url} />
             }
           ]}
         />

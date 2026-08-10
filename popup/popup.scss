@@ -1,6 +1,6 @@
 @import "../node_modules/nord/src/sass/nord.scss";
 @import '@mantine/core/styles.css';
-@import 'mantine-react-table/styles.css';
+@import 'mantine-datatable/styles.css';
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 
@@ -8,6 +8,8 @@ body {
   width: 65em;
   font-family: "Noto Sans", serif;
   font-size: 12px;
+  // Horizontal overflow belongs to the table's own scroll area, never the popup.
+  overflow-x: hidden;
 }
 h3{
   font-size: 20px;

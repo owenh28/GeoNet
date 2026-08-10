@@ -1,16 +1,27 @@
-const agols = []
-const regex = /\d\?/gm
+import { parseCaptureUrl, serviceRootUrlFilters } from "~capture_item"
+
+
+
+
+
 chrome.webRequest.onBeforeRequest.addListener(
   (details) => {
-    let server:string = details.url.split("services/")[0] + "services/";
-    
-    chrome.tabs.sendMessage(details.tabId, { greeting:"new_server", data: server });
-    if (details.url.match(regex)){
-      let layerUrl: string = details.url.split("?")[0]
-      chrome.tabs.sendMessage(details.tabId, { greeting:"new_layer", data: layerUrl });
-    }
-    
+    if (details.tabId < 0) return
 
+    const capturedService = parseCaptureUrl(details.url)
+    if (!capturedService) return
+
+    // sendMessage rejects when the tab has no content script listening (chrome://,
+    // pre-injection navigations); swallow it rather than logging an unhandled rejection.
+    const notify = (greeting: string) =>
+      chrome.tabs
+        .sendMessage(details.tabId, { greeting, data: capturedService })
+        .catch(() => undefined)
+
+    notify("new_server")
+    if (capturedService.layerId) {
+      notify("new_layer")
+    }
   },
-  { urls: ["*://*/rest/services/*", "*://*/*/rest/services/*"] }
+  { urls: serviceRootUrlFilters() }
 )
